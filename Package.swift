@@ -2,40 +2,48 @@
 import PackageDescription
 
 let package = Package(
-    name: "VeoBlinkID",
+    name: "YourPackage",
     platforms: [
         .iOS(.v15)
     ],
     products: [
         .library(
-            name: "VeoBlinkID",
-            targets: ["VeoBlinkID"]),
+            name: "YourLibrary",
+            targets: ["YourTarget"]),
     ],
     dependencies: [
         // 基础依赖
     ],
     targets: [
         .target(
-            name: "VeoBlinkID",
+            name: "YourTarget",
             dependencies: [
-                .target(name: "VeoBlinkID")
+                .target(name: "SDKWrapper")
             ]
         ),
         .target(
-            name: "VeoBlinkID",
+            name: "SDKWrapper",
             dependencies: [
-                 .binaryTarget(
-                     name: "BlinkID",
-                     url: "https://github.com/BlinkID/blinkid-ios/releases/download/v6.13.0/BlinkID.xcframework.zip",
-                     condition: .when(platforms: [.iOS("15")])
-                 ),
                 .target(
-                    name: "BlinkIDUX",
-                    condition: .when(platforms: [.iOS("16")]),
-                    products: [
-                          .library(name: "BlinkIDUX", type: .dynamic, targets: ["BlinkIDUX"])
-                    ],
-                    targets: [.target(name: "BlinkIDUX",
+                    name: "SDKVersion1",
+                    condition: .when(platforms: [.iOS("15")])
+                ),
+                .target(
+                    name: "SDKVersion2",
+                    condition: .when(platforms: [.iOS("16")])
+                )
+            ]
+        ),
+        .target(
+            name: "SDKVersion1",
+            dependencies: [.binaryTarget(
+                     name: "BlinkID",
+                     url: "https://github.com/BlinkID/blinkid-ios/releases/download/v6.13.0/BlinkID.xcframework.zip"
+                 )]
+        ),
+        .target(
+            name: "SDKVersion2",
+            dependencies: [.target(name: "BlinkIDUX",
                                         dependencies: ["BlinkID"],
                                         path: "Source",
                                         resources: [
@@ -46,8 +54,6 @@ let package = Package(
                                     name: "BlinkID",
                                     path: "Frameworks/BlinkID.xcframework"
                                  )]
-                )
-            ]
         )
     ]
 )
