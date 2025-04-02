@@ -48,14 +48,6 @@ let package = Package(
                                  )]
                 )
             ]
-        ),
-        .target(
-            name: "SDKVersion1",
-            dependencies: []
-        ),
-        .target(
-            name: "SDKVersion2",
-            dependencies: []
         )
     ]
 )
